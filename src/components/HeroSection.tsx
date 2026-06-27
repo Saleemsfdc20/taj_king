@@ -49,28 +49,30 @@ export default function HeroSection() {
   const [spiceParticles, setSpiceParticles] = useState<SpiceParticle[]>([]);
   const [smokeParticles, setSmokeParticles] = useState<SmokeParticle[]>([]);
 
-  // Preload all frames
+  // Preload all frames progressively
   useEffect(() => {
     const images: HTMLImageElement[] = [];
     let loadedCount = 0;
+    let didShow = false;
+    const initialRequired = 15; // Number of frames to load before showing page
 
     for (let i = 1; i <= FRAME_COUNT; i++) {
       const img = new Image();
       img.src = getFramePath(i);
-      img.onload = () => {
+      
+      const handleLoad = () => {
         loadedCount++;
         setLoadingProgress(Math.round((loadedCount / FRAME_COUNT) * 100));
-        if (loadedCount === FRAME_COUNT) {
+        
+        // Show the website once the first few frames are loaded to improve loading speed
+        if (loadedCount >= initialRequired && !didShow) {
+          didShow = true;
           setIsLoaded(true);
         }
       };
-      img.onerror = () => {
-        loadedCount++;
-        setLoadingProgress(Math.round((loadedCount / FRAME_COUNT) * 100));
-        if (loadedCount === FRAME_COUNT) {
-          setIsLoaded(true);
-        }
-      };
+
+      img.onload = handleLoad;
+      img.onerror = handleLoad; // Count error as loaded to prevent block
       images.push(img);
     }
 
@@ -122,9 +124,30 @@ export default function HeroSection() {
   const renderFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
-    const img = imagesRef.current[frameIndex];
+    if (!canvas || !ctx || !imagesRef.current.length) return;
 
-    if (!canvas || !ctx || !img || !img.complete) return;
+    let img = imagesRef.current[frameIndex];
+
+    // Find the closest loaded frame if the target frame isn't loaded yet
+    if (!img || !img.complete || img.naturalWidth === 0) {
+      let closestImg = null;
+      let minDiff = Infinity;
+      for (let i = 0; i < imagesRef.current.length; i++) {
+        const tempImg = imagesRef.current[i];
+        if (tempImg && tempImg.complete && tempImg.naturalWidth > 0) {
+          const diff = Math.abs(i - frameIndex);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestImg = tempImg;
+          }
+        }
+      }
+      if (closestImg) {
+        img = closestImg;
+      } else {
+        return; // No frames loaded at all yet
+      }
+    }
 
     // Set canvas size to match viewport while maintaining aspect ratio
     const dpr = window.devicePixelRatio || 1;
@@ -270,9 +293,18 @@ export default function HeroSection() {
     const handleResize = () => renderFrame(currentFrameRef.current);
     window.addEventListener('resize', handleResize);
 
+    // Refresh ScrollTrigger at delayed intervals to ensure sibling components recalculate coordinates
+    // once the pinned scroll space is created in the DOM.
+    const t1 = setTimeout(() => ScrollTrigger.refresh(), 100);
+    const t2 = setTimeout(() => ScrollTrigger.refresh(), 600);
+    const t3 = setTimeout(() => ScrollTrigger.refresh(), 1500);
+
     return () => {
       ctx.revert();
       window.removeEventListener('resize', handleResize);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
     };
   }, [isLoaded, renderFrame]);
 

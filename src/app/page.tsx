@@ -37,6 +37,9 @@ export default function Home() {
 
     gsap.ticker.lagSmoothing(0);
 
+    // Initial ScrollTrigger recalculation
+    ScrollTrigger.refresh();
+
     return () => {
       lenis.destroy();
       gsap.ticker.remove(lenis.raf);
