@@ -8,8 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
 const quickLinks = [
-  { label: 'Home', href: '#hero' },
-  { label: 'Menu', href: '#menu' },
+  { label: 'Home', href: '#home' },
   { label: 'About Us', href: '#about' },
   { label: 'Gallery', href: '#gallery' },
   { label: 'Reviews', href: '#reviews' },

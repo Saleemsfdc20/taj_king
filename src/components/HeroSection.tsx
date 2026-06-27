@@ -437,10 +437,10 @@ export default function HeroSection() {
             Order Now
           </a>
           <a
-            href="#menu"
+            href="#reviews"
             className="btn-secondary text-base md:text-lg"
           >
-            View Menu
+            Reviews
           </a>
         </div>
 

@@ -47,7 +47,6 @@ const galleryItems: GalleryItem[] = [
 export default function Gallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef<HTMLDivElement[]>([]);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const lightboxRef = useRef<HTMLDivElement>(null);
 
@@ -91,22 +90,19 @@ export default function Gallery() {
       }
 
       // Gallery items stagger
-      const validItems = itemsRef.current.filter(Boolean);
-      if (validItems.length > 0) {
-        gsap.from(validItems, {
-          y: 60,
-          opacity: 0,
-          scale: 0.95,
-          duration: 0.7,
-          stagger: 0.12,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
+      gsap.from('.gallery-item', {
+        y: 60,
+        opacity: 0,
+        scale: 0.95,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -165,13 +161,10 @@ export default function Gallery() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
           style={{ gridAutoRows: '200px' }}
         >
-          {galleryItems.map((item, index) => (
+          {galleryItems.map((item) => (
             <div
               key={item.src}
-              ref={(el) => {
-                if (el) itemsRef.current[index] = el;
-              }}
-              className={`group relative rounded-xl overflow-hidden cursor-pointer ${
+              className={`gallery-item group relative rounded-xl overflow-hidden cursor-pointer ${
                 item.span === 2 ? 'sm:row-span-2' : ''
               }`}
               onClick={() => openLightbox(item.src)}

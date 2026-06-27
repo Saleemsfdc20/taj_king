@@ -52,11 +52,6 @@ const FEATURES: FeatureCard[] = [
 export default function WhyChooseUs() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
-  const setCardRef = (el: HTMLDivElement | null, index: number) => {
-    if (el) cardsRef.current[index] = el;
-  };
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -78,16 +73,15 @@ export default function WhyChooseUs() {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: section,
-            start: 'top 80%',
+            start: 'top 85%',
             toggleActions: 'play none none reverse',
           },
         }
       );
 
       // Cards stagger reveal from bottom
-      const cards = cardsRef.current.filter(Boolean);
       gsap.fromTo(
-        cards,
+        '.why-us-card',
         { y: 80, opacity: 0, scale: 0.9 },
         {
           y: 0,
@@ -98,7 +92,7 @@ export default function WhyChooseUs() {
           stagger: 0.12,
           scrollTrigger: {
             trigger: section,
-            start: 'top 65%',
+            start: 'top 85%',
             toggleActions: 'play none none reverse',
           },
         }
@@ -143,11 +137,10 @@ export default function WhyChooseUs() {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {FEATURES.map((feature, index) => (
+          {FEATURES.map((feature) => (
             <div
               key={feature.title}
-              ref={(el) => setCardRef(el, index)}
-              className="group relative p-8 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:bg-white/10 hover:border-[#F97316]/40 hover:shadow-xl hover:shadow-[#F97316]/10 cursor-default"
+              className="why-us-card group relative p-8 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:bg-white/10 hover:border-[#F97316]/40 hover:shadow-xl hover:shadow-[#F97316]/10 cursor-default"
               style={{ opacity: 0 }}
             >
               {/* Hover glow effect */}

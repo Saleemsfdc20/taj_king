@@ -31,7 +31,6 @@ const reviews: Review[] = [
 export default function CustomerReviews() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
   const badgeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,21 +53,18 @@ export default function CustomerReviews() {
       }
 
       // Cards stagger animation
-      const validCards = cardsRef.current.filter(Boolean);
-      if (validCards.length > 0) {
-        gsap.from(validCards, {
-          y: 80,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
+      gsap.from('.review-card', {
+        y: 80,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
 
       // Google badge animation
       if (badgeRef.current) {
@@ -139,13 +135,10 @@ export default function CustomerReviews() {
 
         {/* Reviews Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {reviews.map((review, index) => (
+          {reviews.map((review) => (
             <div
               key={review.name}
-              ref={(el) => {
-                if (el) cardsRef.current[index] = el;
-              }}
-              className="relative p-8 md:p-10 rounded-2xl transition-all duration-500 hover:-translate-y-2"
+              className="review-card relative p-8 md:p-10 rounded-2xl transition-all duration-500 hover:-translate-y-2"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 backdropFilter: 'blur(20px)',

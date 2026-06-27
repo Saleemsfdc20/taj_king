@@ -9,7 +9,6 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import OurStory from '@/components/OurStory';
 import WhyChooseUs from '@/components/WhyChooseUs';
-import SignatureShawarmas from '@/components/SignatureShawarmas';
 import FreshIngredients from '@/components/FreshIngredients';
 import CustomerReviews from '@/components/CustomerReviews';
 import Gallery from '@/components/Gallery';
@@ -59,10 +58,6 @@ export default function Home() {
       <div className="section-divider mx-8 md:mx-16" />
 
       <WhyChooseUs />
-
-      <div className="section-divider mx-8 md:mx-16" />
-
-      <SignatureShawarmas />
 
       <div className="section-divider mx-8 md:mx-16" />
 

@@ -59,11 +59,6 @@ const INGREDIENTS: Ingredient[] = [
 export default function FreshIngredients() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
-  const setCardRef = (el: HTMLDivElement | null, index: number) => {
-    if (el) cardsRef.current[index] = el;
-  };
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -85,15 +80,17 @@ export default function FreshIngredients() {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: section,
-            start: 'top 80%',
+            start: 'top 85%',
             toggleActions: 'play none none reverse',
           },
         }
       );
 
       // Cards fly in from different directions
-      cardsRef.current.filter(Boolean).forEach((card, index) => {
+      const cards = section.querySelectorAll('.ingredient-card');
+      cards.forEach((card, index) => {
         const ingredient = INGREDIENTS[index];
+        if (!ingredient) return;
         gsap.fromTo(
           card,
           {
@@ -114,7 +111,7 @@ export default function FreshIngredients() {
             delay: index * 0.1,
             scrollTrigger: {
               trigger: section,
-              start: 'top 80%',
+              start: 'top 85%',
               toggleActions: 'play none none reverse',
             },
           }
@@ -177,8 +174,7 @@ export default function FreshIngredients() {
           {INGREDIENTS.map((ingredient, index) => (
             <div
               key={ingredient.name}
-              ref={(el) => setCardRef(el, index)}
-              className={`group relative ${index === 6 ? 'col-span-2 md:col-span-1' : ''}`}
+              className={`ingredient-card group relative ${index === 6 ? 'col-span-2 md:col-span-1' : ''}`}
               style={{
                 opacity: 0,
                 animation: `ingredient-float 3s ease-in-out infinite`,
