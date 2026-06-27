@@ -10,6 +10,7 @@ interface MenuItem {
   price: string;
   image: string;
   description: string;
+  tags: string[];
 }
 
 const menuItems: MenuItem[] = [
@@ -18,30 +19,35 @@ const menuItems: MenuItem[] = [
     price: '₹120',
     image: '/images/classic-chicken-shawarma.png',
     description: 'The original classic, perfected over years',
+    tags: ['Authentic', 'Roasted Chicken', 'Garlic Cream', 'Pickles'],
   },
   {
     name: 'Cheese Shawarma',
     price: '₹150',
     image: '/images/cheese-shawarma.png',
     description: 'Loaded with melted mozzarella goodness',
+    tags: ['Mozzarella', 'Double Cheese', 'Gourmet', 'Melted'],
   },
   {
     name: 'Jumbo Shawarma',
     price: '₹180',
     image: '/images/jumbo-shawarma.png',
     description: 'Extra large, extra delicious',
+    tags: ['Extra Large', 'Double Meat', 'Hunger Buster', 'Best Seller'],
   },
   {
     name: 'Spicy Shawarma',
     price: '₹140',
     image: '/images/spicy-shawarma.png',
     description: 'For those who love the heat',
+    tags: ['Peri-Peri', 'Spicy Mayo', 'Hot & Spicy', 'Fire-Grilled'],
   },
   {
     name: 'Special Combo',
     price: '₹200',
     image: '/images/special-combo.png',
     description: 'The ultimate shawarma feast',
+    tags: ['Full Meal', 'Fries + Drink', 'Gourmet Feast', 'Combo Deal'],
   },
 ];
 
@@ -80,7 +86,7 @@ export default function SignatureShawarmas() {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 60%',
+            start: 'top 85%',
             toggleActions: 'play none none none',
           },
         });
@@ -209,33 +215,22 @@ export default function SignatureShawarmas() {
                 >
                   {item.description}
                 </p>
-                <button
-                  className="w-full py-3 rounded-xl text-sm font-semibold tracking-wide uppercase transition-all duration-300 cursor-pointer font-inter"
-                  style={{
-                    background: 'rgba(249,115,22,0.1)',
-                    color: '#F97316',
-                    border: '1px solid rgba(249,115,22,0.3)',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background =
-                      'linear-gradient(135deg, #F97316, #FFB703)';
-                    (e.currentTarget as HTMLButtonElement).style.color = '#FFFFFF';
-                    (e.currentTarget as HTMLButtonElement).style.borderColor =
-                      'transparent';
-                    (e.currentTarget as HTMLButtonElement).style.boxShadow =
-                      '0 8px 25px rgba(249,115,22,0.3)';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background =
-                      'rgba(249,115,22,0.1)';
-                    (e.currentTarget as HTMLButtonElement).style.color = '#F97316';
-                    (e.currentTarget as HTMLButtonElement).style.borderColor =
-                      'rgba(249,115,22,0.3)';
-                    (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-                  }}
-                >
-                  Order Now
-                </button>
+                {/* Premium gourmet tags */}
+                <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/5">
+                  {item.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-md font-inter transition-all duration-300"
+                      style={{
+                        background: 'rgba(249,115,22,0.06)',
+                        color: 'rgba(255,183,3,0.85)',
+                        border: '1px solid rgba(249,115,22,0.15)',
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           ))}

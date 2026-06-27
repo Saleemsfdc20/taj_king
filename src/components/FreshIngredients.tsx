@@ -114,7 +114,7 @@ export default function FreshIngredients() {
             delay: index * 0.1,
             scrollTrigger: {
               trigger: section,
-              start: 'top 65%',
+              start: 'top 80%',
               toggleActions: 'play none none reverse',
             },
           }

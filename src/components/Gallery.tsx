@@ -102,7 +102,7 @@ export default function Gallery() {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 55%',
+            start: 'top 80%',
             toggleActions: 'play none none none',
           },
         });
